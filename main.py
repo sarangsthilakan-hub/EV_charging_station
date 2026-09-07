@@ -116,12 +116,14 @@ def main() -> None:
                 battery_id = input("Battery ID: ")
                 if not battery_id.strip():
                     print("Invalid ID.")
+                    continue
+                if battery_id in inventory:
+                    print("That battery ID is already in the station inventory.")
                 else:
                     break
 
-            if battery_id in inventory:
-                print("That battery ID is already in the station inventory.")
-                continue
+
+
 
             while True:
                 curr_str = input("Current charge of that battery (%): ")
