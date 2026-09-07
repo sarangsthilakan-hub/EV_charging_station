@@ -1,6 +1,5 @@
 import station_logic
 
-
 def render_inventory(inventory: dict) -> str:
     lines = [
         "--------------------------------",
@@ -13,7 +12,6 @@ def render_inventory(inventory: dict) -> str:
         data = inventory[b_id]
         lines.append(station_logic.format_inventory_line(b_id, data["charge"], data["status"]))
     return "\n".join(lines)
-
 
 def main() -> None:
     inventory = {
@@ -70,14 +68,13 @@ def main() -> None:
                     target_chg = int(target_str)
                     if target_chg < 0 or target_chg > 100:
                         raise ValueError
+                    break
                 except ValueError:
                     print("Invalid charge value.")
-                    continue
 
-                if target_chg <= start_chg:
-                    print("Target must be higher than the starting charge.")
-                    continue
-                break
+            if target_chg <= start_chg:
+                print("Target must be higher than the starting charge.")
+                continue
 
             units = target_chg - start_chg
             cost = station_logic.calculate_charge_cost(start_chg, target_chg)
@@ -106,7 +103,6 @@ def main() -> None:
             print(f"{'TOTAL:':<20}Rs {total}")
             print("--------------------------------")
             print()
-            input("Press Enter to return to menu.")
 
         elif choice_str == "2":
             while True:
@@ -120,12 +116,12 @@ def main() -> None:
                 battery_id = input("Battery ID: ")
                 if not battery_id.strip():
                     print("Invalid ID.")
-                    continue
+                else:
+                    break
 
-                if battery_id in inventory:
-                    print("That battery ID is already in the station inventory.")
-                    continue
-                break
+            if battery_id in inventory:
+                print("That battery ID is already in the station inventory.")
+                continue
 
             while True:
                 curr_str = input("Current charge of that battery (%): ")
@@ -143,19 +139,18 @@ def main() -> None:
                     req_chg = int(req_str)
                     if req_chg < 0 or req_chg > 100:
                         raise ValueError
+                    break
                 except ValueError:
                     print("Invalid charge value.")
-                    continue
 
-                if req_chg <= curr_chg:
-                    print("Required charge must be higher than your current charge.")
-                    continue
+            if req_chg <= curr_chg:
+                print("Required charge must be higher than your current charge.")
+                continue
 
-                new_battery_id = station_logic.find_closest_battery(inventory, req_chg)
-                if not new_battery_id:
-                    print("No battery available for your requirement.")
-                    continue
-                break
+            new_battery_id = station_logic.find_closest_battery(inventory, req_chg)
+            if not new_battery_id:
+                print("No battery available for your requirement.")
+                continue
 
             new_chg = inventory[new_battery_id]["charge"]
             cost = station_logic.calculate_swap_cost(curr_chg, req_chg)
@@ -191,11 +186,9 @@ def main() -> None:
             print(f"{'TOTAL:':<20}Rs {total}")
             print("--------------------------------")
             print()
-            input("Press Enter to return to menu.")
 
         else:
             print("Invalid choice.")
-
 
 if __name__ == "__main__":
     main()
