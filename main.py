@@ -58,7 +58,7 @@ def main() -> None:
                 start_str = input("Starting charge (%): ")
                 try:
                     start_chg = int(start_str)
-                    if start_chg < 0:
+                    if start_chg < 0 or start_chg > 100:
                         raise ValueError
                     break
                 except ValueError:
@@ -68,7 +68,7 @@ def main() -> None:
                 target_str = input("Target charge (%): ")
                 try:
                     target_chg = int(target_str)
-                    if target_chg < 0:
+                    if target_chg < 0 or target_chg > 100:
                         raise ValueError
                 except ValueError:
                     print("Invalid charge value.")
@@ -83,7 +83,7 @@ def main() -> None:
             cost = station_logic.calculate_charge_cost(start_chg, target_chg)
 
             is_repeat = ev_id in past_customers
-            discount = station_logic.get_charge_discount(units, is_repeat)
+            discount = station_logic.get_charge_discount(cost, is_repeat)
             total = cost - discount
 
             past_customers.add(ev_id)
@@ -131,7 +131,7 @@ def main() -> None:
                 curr_str = input("Current charge of that battery (%): ")
                 try:
                     curr_chg = int(curr_str)
-                    if curr_chg < 0:
+                    if curr_chg < 0 or curr_chg > 100:
                         raise ValueError
                     break
                 except ValueError:
@@ -141,7 +141,7 @@ def main() -> None:
                 req_str = input("Required charge (%): ")
                 try:
                     req_chg = int(req_str)
-                    if req_chg < 0:
+                    if req_chg < 0 or req_chg > 100:
                         raise ValueError
                 except ValueError:
                     print("Invalid charge value.")
@@ -166,7 +166,7 @@ def main() -> None:
 
             past_customers.add(ev_id)
 
-            returned_chg = curr_chg + 30
+            returned_chg = min(curr_chg + 30, 100)
 
             for b_id, data in inventory.items():
                 if data["status"] == "Returned":

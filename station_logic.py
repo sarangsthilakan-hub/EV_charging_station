@@ -9,9 +9,9 @@ def calculate_swap_cost(curr_chg: int, req_chg: int) -> int:
     return ((req_chg - curr_chg) * 10) + 50
 
 
-def get_charge_discount(units: int, is_repeat: bool) -> int:
+def get_charge_discount(cost: int, is_repeat: bool) -> int:
     if is_repeat:
-        return units
+        return math.ceil(cost * 0.10)
     return 0
 
 
